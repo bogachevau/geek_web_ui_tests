@@ -1,12 +1,9 @@
 package ru.geekbrains.homeWork5;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -15,33 +12,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.Collections;
 import java.util.List;
 
-public class TestCrmGeekBrains {
-    public static WebDriver driver;
-    WebDriverWait webDriverWait;
-    Actions actions;
+public class CreateProject {
+    private static WebDriver driver;
+    private static WebDriverWait webDriverWait;
+    private static Actions actions;
 
-    private static void loginToCrm() {
+    public static void loginToCrm() {
         driver.get("https://crm.geekbrains.space/user/login");
         driver.findElement(By.name("_username")).sendKeys("Applanatest1");
         driver.findElement(By.name("_password")).sendKeys("Student2020!");
         driver.findElement(By.xpath("//button")).click();
     }
 
-    @BeforeAll
-    static void registerDriver() {
-        WebDriverManager.chromedriver().setup();
-    }
-
-    @BeforeEach
-    void setupBrowser() {
-        driver = new ChromeDriver();
-        webDriverWait = new WebDriverWait(driver, 15);
-        actions = new Actions(driver);
-        loginToCrm();
-    }
-
-    @Test
-    void testCreateProjectToCrmNegative() throws InterruptedException {
+    public static void createProjectToCrm() throws InterruptedException {
+        Actions actions = new Actions(driver);
         WebElement projectElement = driver.findElement(By.xpath("//a/span[text()='Проекты']"));
         actions.moveToElement(projectElement).perform();
         driver.findElement(By.xpath("//li[@data-route='crm_project_index']/a")).click();
@@ -60,6 +44,9 @@ public class TestCrmGeekBrains {
         List<WebElement> organizationVars = Collections.singletonList(driver.findElement(
                 By.xpath("//div[@class='select2-result-label']")));
         organizationVars.get(0).click();
+
+        //webDriverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//li/div[text()='«Все организации»']")));
+        //driver.findElement(By.xpath("//li/div[text()='«Все организации»']")).click();
 
         Select projectPriority = new Select(driver.
                 findElement(By.xpath("//select[contains(@id,'crm_project_priority')]")));
@@ -98,53 +85,28 @@ public class TestCrmGeekBrains {
         driver.findElement(By.xpath("//div[@id='select2-drop']//input")).sendKeys("Ferdinand");
         driver.findElement(By.xpath("//div[@id='select2-drop']//input")).sendKeys(Keys.ENTER);
 
+        /*driver.switchTo().frame(driver.findElement(By.xpath("//iframe[contains(@id, 'crm_project_planning')]")));
+        driver.findElement(By.xpath("//body")).sendKeys("test");
+        driver.switchTo().defaultContent();
+
+        driver.switchTo().frame(driver.findElement(
+                By.xpath("//iframe[contains(@id, 'crm_project_requirementsManagement')]")));
+        driver.findElement(By.xpath("//body")).sendKeys("test");
+        driver.switchTo().defaultContent();
+
+        driver.switchTo().frame(driver.findElement(By.xpath("//iframe[contains(@id, 'crm_project_development')]")));
+        driver.findElement(By.xpath("//body")).sendKeys("test");
+        driver.switchTo().defaultContent();
+
+        driver.switchTo().frame(driver.findElement(By.xpath("//iframe[contains(@id, 'crm_project_testing')]")));
+        driver.findElement(By.xpath("//body")).sendKeys("test");
+        driver.switchTo().defaultContent();*/
+
         driver.findElement(By.xpath("//input[contains(@id, 'crm_project_configManagement')]")).
                 sendKeys("TestTest");
 
         driver.findElement(By.xpath("//button[contains(text(), 'Сохранить и закрыть')]")).click();
 
-        String validationFailed = driver.findElement(By.xpath("//span[@class='validation-failed']")).getText();
-        Assertions.assertEquals("Это значение уже используется.", validationFailed);
+        Thread.sleep(5000);
     }
-
-    @Test
-    void testCreateContactFaceToCrm() throws InterruptedException {
-        WebElement counterparties = driver.findElement(By.xpath("//a/span[text()='Контрагенты']"));
-        actions.moveToElement(counterparties).perform();
-
-        driver.findElement(By.xpath("//a/span[text()='Контактные лица']")).click();
-        webDriverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@title='Создать контактное лицо']")));
-
-        driver.findElement(By.xpath("//a[@title='Создать контактное лицо']")).click();
-
-        webDriverWait.until(ExpectedConditions.
-                presenceOfElementLocated(By.xpath("//input[contains(@id, 'crm_contact_lastName')]")));
-        driver.findElement(By.xpath("//input[contains(@id, 'crm_contact_lastName')]")).sendKeys("Ivanov");
-        driver.findElement(By.xpath("//input[contains(@id, 'crm_contact_firstName')]")).sendKeys("Ivan");
-        driver.findElement(By.xpath("//input[contains(@id, 'crm_contact_middleName')]")).
-                sendKeys("Ivanovitch");
-
-        driver.findElement(By.xpath("//span[text()='Укажите организацию']")).click();
-        webDriverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//li/div[text()='«Все организации»']")));
-        driver.findElement(By.xpath("//li/div[text()='«Все организации»']")).click();
-
-        driver.findElement(By.xpath("//input[contains(@id, 'crm_contact_jobTitle')]")).sendKeys("Инженер");
-
-        Select contactStatus = new Select(driver.findElement(By.xpath("//select[contains(@id, 'crm_contact_status')]")));
-        contactStatus.selectByVisibleText("Активный");
-
-        driver.findElement(By.xpath("//button[contains(text(), 'Сохранить и закрыть')]")).click();
-
-        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//a[contains(@class, 'btn back icons-holder-text')]")));
-        String buttonCreateContactFace = driver.findElement(
-                By.xpath("//a[contains(@class, 'btn back icons-holder-text')]")).getText();
-        Assertions.assertEquals("Отмена", buttonCreateContactFace);
-    }
-
-    @AfterEach
-    void tearDown() {
-        driver.quit();
-    }
-
 }

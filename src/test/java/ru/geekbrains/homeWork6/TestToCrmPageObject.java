@@ -1,5 +1,7 @@
 package ru.geekbrains.homeWork6;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -8,9 +10,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static ru.yandex.qatools.htmlelements.matchers.WebElementMatchers.isDisplayed;
 
+@Story("Тестирование CRM GeekBrains")
 public class TestToCrmPageObject extends BaseTest{
 
+    @Story("Создание проекта")
     @Test
+    @Description("Тест логина и создания нового проекта")
     void loginInCrmAndCreateProjectPageObjectTest() {
         driver.get("https://crm.geekbrains.space/");
         new LoginPageCrmGeekBrains(driver)
@@ -44,7 +49,9 @@ public class TestToCrmPageObject extends BaseTest{
                 new CreateProjectPage(driver).validationFailed.getText());
     }
 
+    @Story("Создание контактного лица")
     @Test
+    @Description("Тест логина и создания контактного лица")
     void loginInCrmAndCreateContactPageObjectTest() {
         driver.get("https://crm.geekbrains.space/");
         new LoginPageCrmGeekBrains(driver)
@@ -59,7 +66,7 @@ public class TestToCrmPageObject extends BaseTest{
                 .createContact()
                 .fillContactLastName("Petrov")
                 .fillContactFirstName("Petr")
-                .fillContactMiddleName("Petrovich")
+                .fillContactMiddleName("Petrovitch")
                 .selectOrganization()
                 .fillOrganization("test")
                 .optionOrganization()
