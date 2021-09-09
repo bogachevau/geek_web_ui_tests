@@ -83,12 +83,14 @@ public class CreateProject {
 
         webDriverWait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//div[contains(@id, 's2id_crm_project_contactMain')]/a")));
-        Thread.sleep(2000);
+        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//div[@class='select2-container select2']")));
+
         driver.findElement(By.xpath("//div[contains(@id, 's2id_crm_project_contactMain')]/a")).click();
-        driver.findElement(By.xpath("//div[@id='select2-drop']//input")).sendKeys("Black");
+        driver.findElement(By.xpath("//div[@id='select2-drop']//input")).sendKeys("Ferdinand");
         driver.findElement(By.xpath("//div[@id='select2-drop']//input")).sendKeys(Keys.ENTER);
 
-        driver.switchTo().frame(driver.findElement(By.xpath("//iframe[contains(@id, 'crm_project_planning')]")));
+        /*driver.switchTo().frame(driver.findElement(By.xpath("//iframe[contains(@id, 'crm_project_planning')]")));
         driver.findElement(By.xpath("//body")).sendKeys("test");
         driver.switchTo().defaultContent();
 
@@ -103,10 +105,10 @@ public class CreateProject {
 
         driver.switchTo().frame(driver.findElement(By.xpath("//iframe[contains(@id, 'crm_project_testing')]")));
         driver.findElement(By.xpath("//body")).sendKeys("test");
-        driver.switchTo().parentFrame();
+        driver.switchTo().defaultContent();*/
 
         driver.findElement(By.xpath("//input[contains(@id, 'crm_project_configManagement')]")).
-                sendKeys("TestTest"); //почему-то не хочет вводить текст в поле
+                sendKeys("TestTest");
 
         driver.findElement(By.xpath("//button[contains(text(), 'Сохранить и закрыть')]")).click();
 
