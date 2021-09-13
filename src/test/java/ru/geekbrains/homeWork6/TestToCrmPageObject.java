@@ -39,6 +39,7 @@ public class TestToCrmPageObject extends BaseTest{
                 .selectProjectRp("Applanatest1 Applanatest1 Applanatest1")
                 .selectProjectAdministrator("Applanatest1 Applanatest1 Applanatest1")
                 .selectProjectManager("Applanatest1 Applanatest1 Applanatest1")
+                .fillIframeProjectPlanning("Test")
                 .fillConfigManagement("TestTest")
                 .buttonSaveAndClose.click();
 

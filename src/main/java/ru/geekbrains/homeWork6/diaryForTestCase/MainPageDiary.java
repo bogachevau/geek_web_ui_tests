@@ -12,13 +12,13 @@ public class MainPageDiary extends BaseView {
         super(driver);
     }
 
-    public static final String createNewPost = "//a[@title='Новая запись']";
+    public static final String CREATE_NEW_POST = "//a[@title='Новая запись']";
 
-    @FindBy(xpath = createNewPost)
+    @FindBy(xpath = CREATE_NEW_POST)
     public WebElement newPost;
 
     public CreateNewPostDiary newPostCreate() {
-        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(createNewPost)));
+        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(CREATE_NEW_POST)));
         newPost.click();
         return new CreateNewPostDiary(driver);
     }
