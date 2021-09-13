@@ -106,6 +106,19 @@ public class CreateProjectPage extends BaseView {
         return this;
     }
 
+    @FindBy(xpath = "//iframe[contains(@id, 'crm_project_planning')]")
+    public WebElement iframeProjectPlanning;
+
+    @FindBy(xpath = "//body")
+    public WebElement textIframeProjectPlanning;
+
+    public CreateProjectPage fillIframeProjectPlanning(String text) {
+        driver.switchTo().frame(iframeProjectPlanning);
+        textIframeProjectPlanning.sendKeys(text);
+        driver.switchTo().defaultContent();
+        return this;
+    }
+
     @FindBy(xpath = "//input[contains(@id, 'crm_project_configManagement')]")
     public WebElement configManagement;
 
